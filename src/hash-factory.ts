@@ -1,0 +1,1 @@
+export type HashFactory<K> = (key: K) => any;
