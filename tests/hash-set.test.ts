@@ -95,4 +95,15 @@ describe("HashSet", () => {
         assert.equal(hashMap.size, 0);
     });
 
+    it("Should spread properly values into an arrat", () => {
+        const hashMap = new HashSet<CompoundKey>(k => k.getHashValue());
+
+        hashMap.add(new CompoundKey("key", 1));
+        hashMap.add(new CompoundKey("key", 2));
+        hashMap.add(new CompoundKey("key", 5));
+        hashMap.add(new CompoundKey("key", 6));
+
+        assert.equal([...hashMap].length, 4);
+    });
+
 });

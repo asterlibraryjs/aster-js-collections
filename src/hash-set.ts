@@ -41,7 +41,7 @@ export class HashSet<K> implements Iterable<K> {
         }
     }
 
-    *keys(): IterableIterator<K> {
+    keys(): IterableIterator<K> {
         return this._store.values();
     }
 
