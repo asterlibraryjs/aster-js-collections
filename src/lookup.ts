@@ -9,6 +9,8 @@ export class Lookup<K, V> {
 
     get itemSize(): number { return this._itemSize; }
 
+    get [Symbol.toStringTag](): string { return "[Object Lookup]"; }
+
     constructor(hashFactory?: HashFactory<K>) {
         this._store = hashFactory ? new HashMap<K, V[]>(hashFactory) : new Map();
         this._itemSize = 0;

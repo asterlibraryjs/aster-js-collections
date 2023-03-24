@@ -21,11 +21,42 @@ export class HashMap<K, V> implements Iterable<[K, V]> {
     }
 
     get(key: K): V | undefined {
+        const entry = this.getEntry(key);
+        if (entry) return entry[1];
+    }
+
+    getOrElse(key: K, fallback: V): V {
+        const entry = this.getEntry(key);
+        return entry ? entry[1] : fallback;
+    }
+
+    private getEntry(key: K): [K, V] | undefined {
+        const hash = this._hashFactory(key);
+        return this._store.get(hash);
+    }
+
+    getOrSet(key: K, factory: (key: K, src: HashMap<K, V>) => V): V;
+    getOrSet(key: K, factory: (key: K, src: HashMap<K, V>) => Promise<V>): Promise<V>;
+    getOrSet(key: K, factory: (key: K, src: HashMap<K, V>) => Promise<V> | V): Promise<V> | V {
         const hash = this._hashFactory(key);
         const entry = this._store.get(hash);
-        if (entry) {
-            return entry[1];
+        if (!entry) {
+            const value = factory(key, this);
+
+            if (value instanceof Promise) {
+                return this.addAsync(hash, key, value);
+            }
+
+            this._store.set(hash, [key, value]);
+            return value;
         }
+        return entry[1];
+    }
+
+    private async addAsync(hash: any, key: K, valuePromise: Promise<V>): Promise<V> {
+        const value = await valuePromise;
+        this._store.set(hash, [key, value]);
+        return value;
     }
 
     set(key: K, value: V): this {
