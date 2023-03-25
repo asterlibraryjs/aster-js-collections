@@ -1,6 +1,6 @@
 {
   "name": "@aster-js/collections",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Aster collections library part of Aster js library",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

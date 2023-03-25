@@ -8,7 +8,7 @@ export class HashMap<K, V> implements Iterable<[K, V]> {
 
     get [Symbol.toStringTag](): string { return "[Object HashMap]"; }
 
-    constructor(hashFactory: HashFactory<K> = String, values?: Iterable<readonly [K, V]>) {
+    constructor(hashFactory: HashFactory<K> = k => k, values?: Iterable<readonly [K, V]>) {
         this._hashFactory = hashFactory;
         this._store = new Map<any, [K, V]>(
             this.mapEntries(values)
