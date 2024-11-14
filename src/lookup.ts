@@ -111,7 +111,9 @@ export class Lookup<K, V> {
     }
 
     *[Symbol.iterator](): IterableIterator<[K, V[]]> {
-        yield* this._store;
+        for (const [key, values] of this._store) {
+            yield [key, values.slice()];
+        }
     }
 
     static create<K, V>(values: Iterable<readonly [K, V]>, hashFactory?: HashFactory<K>): Lookup<K, V> {
